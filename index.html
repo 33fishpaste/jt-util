@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>JSON ⇄ Table Editor</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<!-- ───────── Overlay ───────── -->
+<div id="overlay"></div>
+
+<!-- ───────── Sidebar ───────── -->
+<aside id="sidebar">
+  <div class="menu-item" id="mi-new">＋ New</div>
+  <div class="menu-item" id="mi-storage">💾 Storage</div>
+</aside>
+
+<!-- ───────── Header ───────── -->
+<header>
+  <span class="hdr-title">JSON ⇄ Table Editor <small>(nest / flat)</small></span>
+  <!-- ※ アイコンを右端に移動 -->
+  <button id="hamburger" aria-label="menu">☰</button>
+</header>
+
+<!-- ───────── Main Pages ───────── -->
+<main>
+  <!-- ===== Editor page ===== -->
+  <section id="editorPage" class="page active">
+    <input id="docTitle" class="titleInput" type="text" placeholder="タイトル (任意)…">
+
+    <!-- ▼ ① メタ JSON -->
+    <textarea id="metaJson" class="compact" rows="3"
+              placeholder="メタ JSON (_meta.columns) を貼り付け" spellcheck="false"></textarea>
+
+    <!-- ▼ ② メタデータ編集 -->
+    <div id="metaPane" class="centerPane">
+      <h2>メタデータ列エディタ</h2>
+      <div class="btnBox">
+        <button id="btnMetaBuildFlat">フラットメタテーブル生成 ▶︎</button>
+        <button id="btnMetaToJson">◀ メタ JSON コピー</button>
+        <button id="btnAddColumn">＋ カラム追加</button>
+      </div>
+      <div id="metaTableZone"></div>
+    </div>
+
+    <!-- ▼ ③ データ JSON -->
+    <textarea id="dataJson" class="compact" rows="3"
+              placeholder="データ JSON を貼り付け" spellcheck="false"></textarea>
+
+    <!-- ▼ ④ データテーブル -->
+    <div id="dataPane" class="centerPane">
+      <div class="btnBox">
+        <button id="btnBuild">ネストテーブル生成 ▶︎</button>
+        <button id="btnBuildFlat">フラットテーブル生成 ▶︎</button>
+        <button id="btnToJson">◀ JSON コピー</button>
+        <button id="btnAddEntity">＋ レコード追加</button>
+      </div>
+      <div id="tableZone"></div>
+    </div>
+  </section>
+
+  <!-- ===== Storage page ===== -->
+  <section id="storagePage" class="page">
+    <!-- 動的にリストを描画します -->
+  </section>
+</main>
+
+<!-- モジュール読み込み -->
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

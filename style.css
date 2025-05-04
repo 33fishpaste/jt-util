@@ -1,0 +1,258 @@
+/* =================================================
+   Global Design Tokens – Dark Theme
+   ------------------------------------------------- */
+:root{
+  /* Dimensions */
+  --sidebar-width: 260px;
+
+  /* Palette */
+  --color-bg-main:   #121212;
+  --color-bg-side:   #212121;
+  --color-bg-card:   #1e1e1e;
+  --color-bg-darker: #333333;
+  --color-fg:        #fafafa;
+  --color-fg-muted:  #bbbbbb;
+  --color-accent:    #4caf50;
+
+  /* Radius */
+  --radius-s:.4rem;
+  --radius-m:.6rem;
+  --radius-l:.75rem;
+
+  /* Layering */
+  --z-hamburger:1100;
+  --z-sidebar:  1000;
+  --z-overlay:   900;
+
+  /* 既存トークン互換 */
+  --hdr-bg: var(--color-bg-side);
+  --hdr-fg: var(--color-fg);
+  --sb-bg:  var(--color-bg-side);
+}
+
+/* =================================================
+   Base & Reset
+   ================================================= */
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:system-ui, sans-serif;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  background:var(--color-bg-main);
+  color:var(--color-fg);
+  overflow-x:hidden;
+}
+
+/* =================================================
+   Header
+   ================================================= */
+header{
+  background:var(--hdr-bg);
+  color:var(--hdr-fg);
+  display:flex;
+  align-items:center;
+  gap:.8rem;
+  padding:.6rem 1rem;
+  font-size:1.1rem;
+  transition:margin-left .3s ease;      /* ← 追加 */
+}
+.hdr-title{flex:1}
+#hamburger{
+  background:none;
+  border:none;
+  cursor:pointer;
+  font-size:1.6rem;
+  color:inherit;
+  z-index:var(--z-hamburger);
+  margin-left:auto;        /* ← 右端に配置 */
+}
+
+/* =================================================
+   Sidebar (Hamburger Menu)
+   ================================================= */
+#sidebar{
+  position:fixed;
+  inset:0 auto 0 0;
+  width:var(--sidebar-width);
+  height:100vh;
+  padding:1rem .8rem;
+  display:flex;
+  flex-direction:column;
+  gap:.4rem;
+  background:rgba(33,33,33,.12);
+  backdrop-filter:blur(7px);           /* ぼかしはサイドバーだけ */
+  -webkit-backdrop-filter:blur(9px);
+  transform:translateX(-100%);         /* 初期は常に隠す */
+  transition:transform .3s ease;
+  z-index:var(--z-sidebar);
+}
+#sidebar.open{transform:translateX(0)}
+#sidebar .menu-item{
+  padding:.65rem 1rem;
+  border-radius:var(--radius-s);
+  cursor:pointer;
+}
+#sidebar .menu-item:hover{background:rgba(255,255,255,.08)}
+
+/* PC レイアウト：プッシュ型（かぶさらない） */
+@media(min-width:768px){
+  body.menu-open #sidebar{transform:translateX(0)}
+  main{transition:margin-left .3s ease; margin-left:0}
+  body.menu-open main{margin-left:var(--sidebar-width)}
+
+  /* ── タイトル（header）も押し出す ── */
+  body.menu-open header{margin-left:var(--sidebar-width)}
+}
+
+/* =================================================
+   Overlay / Backdrop
+   ================================================= */
+#overlay{
+  position:fixed; inset:0;
+  background:rgba(0,0,0,.45);     /* ← 暗くするだけ。blur は削除 */
+  opacity:0; visibility:hidden;
+  transition:opacity .3s ease, visibility 0s linear .3s;
+  z-index:var(--z-overlay);
+  cursor:pointer;
+}
+body.menu-open #overlay{
+  opacity:1; visibility:visible; transition:opacity .3s ease;
+}
+
+/* デスクトップでは暗転させず、クリック判定のみ残す */
+@media(min-width:768px){
+  body.menu-open #overlay{
+    background:transparent;
+    opacity:0;                     /* 透明だが存在するので閉じ操作は可 */
+  }
+}
+
+/* =================================================
+   Main & Page Containers
+   ================================================= */
+main{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  overflow:auto;
+}
+
+.page{
+  display:none;
+  flex-direction:column;
+  gap:.6rem;
+  padding:1rem;
+  background:var(--color-bg-card);
+  color:var(--color-fg);
+  border-left:4px solid var(--color-accent);
+  border-radius:var(--radius-m);
+}
+.page.active{display:flex}
+
+/* =================================================
+   Controls & Inputs
+   ================================================= */
+textarea,
+input[type="text"],
+select{
+  width:100%;
+  background:var(--color-bg-card);
+  color:var(--color-fg);
+  border:1px solid #444;
+  border-radius:var(--radius-s);
+  padding:.4rem .5rem;
+  font-family:menlo, monospace;
+  font-size:.9rem;
+}
+textarea{resize:vertical}
+.titleInput{
+  background:var(--color-bg-card);
+  color:var(--color-fg);
+  border:1px solid #444;
+  border-radius:var(--radius-s);
+  padding:.4rem .6rem;
+  font-size:1rem;
+}
+
+/* =================================================
+   Table Style (dark-theme)
+   ================================================= */
+table{
+  border-collapse:collapse;
+  width:100%;
+  font-size:.9rem;
+}
+table caption{
+  caption-side:top;
+  font-weight:bold;
+  text-align:left;
+  padding:.4rem .5rem;
+  background:var(--color-bg-darker);
+  border:1px solid #444;
+  border-bottom:none;
+}
+table th,
+table td{
+  border:1px solid #444;
+  padding:.3rem .5rem;
+  vertical-align:top;
+}
+table thead th{background:var(--color-bg-darker)}
+
+table.flat tbody tr:nth-child(even),
+table.entity tbody tr:nth-child(even),
+table.meta tbody tr:nth-child(even){
+  background:rgba(255,255,255,.04);
+}
+
+/* 内側ネストテーブル */
+table.nested{
+  width:100%;
+  border-collapse:collapse;
+}
+table.nested th,
+table.nested td{
+  border:1px solid #555;
+}
+
+/* メタテーブル専用色 */
+table.meta thead th{background:#3a3a3a}
+
+/* =================================================
+   Buttons & Utility
+   ================================================= */
+button{
+  cursor:pointer;
+  background:var(--color-accent);
+  color:#000;
+  border:none;
+  padding:.45rem .9rem;
+  border-radius:var(--radius-s);
+  font-weight:bold;
+}
+button:hover{opacity:.9}
+
+.btnBox{display:flex;flex-wrap:wrap;gap:.4rem}
+
+/* テキストエリアの最小高さ (compact) */
+textarea.compact{height:auto;min-height:calc(1.3em*3 + .8rem)}
+
+/* 中央パネル囲い */
+.centerPane{
+  border:1px solid #444;
+  border-radius:var(--radius-m);
+  padding:1rem;
+  display:flex;
+  flex-direction:column;
+  gap:.8rem;
+}
+
+/* =================================================
+   その他
+   ================================================= */
+.dmg-icon{width:1.1em;height:1.1em;vertical-align:-.15em}
+
+/* ハンバーガーを隠すのは削除（常に表示） */
