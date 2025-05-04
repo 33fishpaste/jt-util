@@ -1,7 +1,8 @@
 import { $, $$,
          normalizeDataJson,
          copyToClipboard,
-         keySetValid       }          from '../utils.js';
+         keySetValid,
+         setDeep          }          from '../utils.js';
 import { state,
          updateDataJsonArea,
          updateMetaJsonArea,
@@ -18,7 +19,7 @@ function jsonFromTables(){
       const o={};
       tr.querySelectorAll('td[data-key]').forEach(td=>{
         const val=td.querySelector('textarea')?.value ?? td.textContent.trim();
-        meta.setDeep(o,td.dataset.key.split('.'),val);
+        setDeep(o,td.dataset.key.split('.'),val);
       });
       data.push(o);
     });
@@ -30,7 +31,7 @@ function jsonFromTables(){
     const o={};
     ent.querySelectorAll('[data-key]').forEach(cell=>{
       const val=cell.querySelector('textarea')?.value ?? cell.textContent.trim();
-      meta.setDeep(o,cell.dataset.key.split('.'),val);
+      setDeep(o,cell.dataset.key.split('.'),val);
     });
     data.push(o);
   });
@@ -92,7 +93,7 @@ export function initEditor(){
         ent.querySelector('caption span:first-child').textContent=val;
     }
     if(idx<0) return;
-    meta.setDeep(state.currentData[idx],keyPath,val);
+    setDeep(state.currentData[idx],keyPath,val);
     updateDataJsonArea();
   });
 
