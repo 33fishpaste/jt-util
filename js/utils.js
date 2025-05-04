@@ -16,11 +16,21 @@ export const setDeep = (obj, pathArr, val) => {
 };
 
 export const deleteDeep = (obj, pathArr) => {
-  if (!obj) return;
+  if (!obj || typeof obj !== 'object') return;
   const key = pathArr[0];
-  if (pathArr.length === 1) return delete obj[key];
+  if (pathArr.length === 1) {
+    delete obj[key];
+    return;
+  }
+
   deleteDeep(obj[key], pathArr.slice(1));
-  if (obj[key] && Object.keys(obj[key]).length === 0) delete obj[key];
+
+  // 子が空オブジェクトだけになったら親も削除
+  if (
+    obj[key] &&
+    typeof obj[key] === 'object' &&
+    Object.keys(obj[key]).length === 0
+  ) delete obj[key];
 };
 
 /* ========= Misc helpers ========= */
