@@ -218,6 +218,11 @@ table.nested td{
   border:1px solid #555;
 }
 
+/* 折りたたみ可能カラムヘッダ */
+th.collapsible{cursor:pointer}
+th.collapsible::before{content:'\25bc\20'} /* ▼ */
+th.collapsible.collapsed::before{content:'\25b6\20'} /* ▶ */
+
 /* メタテーブル専用色 */
 table.meta thead th{background:#3a3a3a}
 

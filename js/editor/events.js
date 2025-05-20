@@ -145,6 +145,16 @@ $('#btnToggleMeta').onclick = () => {
     (state.currentView==='flat'?$('#btnBuildFlat'):$('#btnBuild')).click();
   };
 
+  /* ----- ネストテーブル開閉 ----- */
+  state.dataZone.addEventListener('click', e => {
+    const th = e.target.closest('th.collapsible');
+    if(!th) return;
+    const td = th.nextElementSibling;
+    if(!td) return;
+    const collapsed = th.classList.toggle('collapsed');
+    td.style.display = collapsed ? 'none' : '';
+  });
+
   /* --- メタ側 --- */
   $('#btnMetaBuildFlat').onclick = () => {
     state.metaZone.textContent='';
