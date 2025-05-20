@@ -2,6 +2,12 @@ import { $, getDeep, setDeep }         from '../utils.js';
 import { state, updateDataJsonArea }   from './state.js';
 import { buildColumnTree, maxDepthOf } from './column.js';
 
+function fitThWidth(th){
+  const len = (th.textContent || '').trim().length;
+  th.style.whiteSpace = 'nowrap';
+  th.style.width = (len + 2) + 'ch';
+}
+
 /* ========= ネストテーブル描画 ========= */
 function renderDataNode(node,dataObj){
   if(!node.order.length){
@@ -9,6 +15,7 @@ function renderDataNode(node,dataObj){
 
     const th=document.createElement('th');
     th.textContent=node.colMeta.label||node.label;
+    fitThWidth(th);
 
     const td=document.createElement('td');
     const v=getDeep(dataObj,node.keyPath.split('.')) ?? '';
@@ -26,6 +33,7 @@ function renderDataNode(node,dataObj){
   const tr=document.createElement('tr');
   const th=document.createElement('th');
   th.textContent=node.label;
+  fitThWidth(th);
   th.classList.add('collapsible');
 
   const td=document.createElement('td');
