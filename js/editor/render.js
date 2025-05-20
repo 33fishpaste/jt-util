@@ -26,6 +26,7 @@ function renderDataNode(node,dataObj){
   const tr=document.createElement('tr');
   const th=document.createElement('th');
   th.textContent=node.label;
+  th.classList.add('collapsible');
 
   const td=document.createElement('td');
   td.classList.add('no-alt');
